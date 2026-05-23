@@ -14,7 +14,7 @@ class LoginView extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return AuthShell(
       title: 'Catatan Harian',
-      subtitle: 'Masuk dan lanjutkan menulis momen kecil yang berarti.',
+      subtitle: 'Masuk dan percayakan catatanmu pada kami:)',
       children: [
         AppTextField(
           controller: controller.loginEmailC,

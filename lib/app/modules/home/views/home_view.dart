@@ -112,7 +112,7 @@ class _HomeHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Catatan',
+                'Selamat Datang di Catatan!',
                 style: Theme.of(context).appBarTheme.titleTextStyle,
               ),
               const SizedBox(height: 4),
