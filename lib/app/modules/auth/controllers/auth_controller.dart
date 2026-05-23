@@ -82,7 +82,7 @@ class AuthController extends GetxController {
     try {
       isLoading.value = true;
       await action();
-      Get.snackbar('Berhasil', successMessage);
+      _showSuccess(successMessage); 
       onSuccess();
     } on FirebaseAuthException catch (error) {
       _showError(_authMessage(error));
@@ -106,22 +106,50 @@ class AuthController extends GetxController {
       case 'invalid-email':
         return 'Format email tidak valid.';
       case 'operation-not-allowed':
-        return 'Email/Password belum diaktifkan di Firebase Authentication.';
-      case 'configuration-not-found':
-        return 'Konfigurasi Firebase Authentication belum aktif untuk project ini. Aktifkan Authentication dan provider Email/Password di Firebase Console.';
+        return 'Email/Password belum diaktifkan.';
       case 'weak-password':
         return 'Password terlalu lemah.';
-      case 'too-many-requests':
-        return 'Terlalu banyak percobaan. Coba lagi nanti.';
-      case 'network-request-failed':
-        return 'Koneksi internet bermasalah.';
       default:
         return '${error.code}: ${error.message ?? 'Autentikasi gagal.'}';
     }
   }
 
+  void _showSuccess(String message) {
+    Get.snackbar(
+      'Berhasil',
+      message,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.white,
+      colorText: Colors.black87,
+      borderRadius: 15,
+      margin: const EdgeInsets.all(16),
+      borderColor: Colors.amberAccent,
+      borderWidth: 2,
+      icon: const Icon(Icons.check_circle_rounded, color: Colors.amber, size: 30),
+      duration: const Duration(seconds: 3),
+      boxShadows: [
+        BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5))
+      ],
+    );
+  }
+
   void _showError(String message) {
-    Get.snackbar('Perhatian', message, snackPosition: SnackPosition.BOTTOM);
+    Get.snackbar(
+      'Perhatian',
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.white,
+      colorText: Colors.black87,
+      borderRadius: 15,
+      margin: const EdgeInsets.all(16),
+      borderColor: Colors.redAccent.shade100,
+      borderWidth: 2,
+      icon: const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 30),
+      duration: const Duration(seconds: 3),
+      boxShadows: [
+        BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5))
+      ],
+    );
   }
 
   @override

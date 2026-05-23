@@ -72,7 +72,7 @@ class AuthShell extends StatelessWidget {
                       height: 120,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 245, 237, 175),
+                        color: const Color.fromARGB(255, 255, 215, 106),
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
