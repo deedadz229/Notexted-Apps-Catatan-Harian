@@ -13,8 +13,8 @@ class RegisterView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return AuthShell(
-      title: 'Buat Akun',
-      subtitle: 'Simpan catatanmu di Firebase agar tetap aman dan sinkron.',
+      title: 'Daftar ke Catatan Harian',
+      subtitle: 'Daftar sekarang dan mulai simpan catatanmu.',
       children: [
         AppTextField(
           controller: controller.registerEmailC,
