@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,7 +64,20 @@ class NoteController extends GetxController {
 
   void addTodo() {
     final title = todoC.text.trim();
-    if (title.isEmpty) return;
+    if (title.isEmpty) {
+      Get.snackbar(
+        'Input Kosong',
+        'Belum ada item yang diisi. Silakan isi item to-do.',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.amber,
+        colorText: Colors.black,
+        borderWidth: 1.0,
+        borderRadius: 16,
+        margin: const EdgeInsets.all(16),
+        snackStyle: SnackStyle.FLOATING,
+      );
+      return;
+    }
     todos.add(TodoItem(title: title));
     todoC.clear();
   }
@@ -158,23 +170,11 @@ class NoteController extends GetxController {
       Get.back();
       Get.snackbar('Berhasil', successMessage);
     } on TimeoutException {
-      Get.snackbar(
-        'Gagal menyimpan',
-        'Firestore terlalu lama merespons. Cek koneksi, Firestore Database, dan rules.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar('Gagal', 'Koneksi terlalu lama.');
     } on FirebaseException catch (error) {
-      Get.snackbar(
-        'Gagal menyimpan',
-        _firestoreMessage(error),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar('Gagal', _firestoreMessage(error));
     } catch (error) {
-      Get.snackbar(
-        'Gagal menyimpan',
-        'Perubahan belum tersimpan: $error',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar('Gagal', 'Terjadi kesalahan: $error');
     } finally {
       isLoading.value = false;
     }
@@ -212,18 +212,9 @@ class NoteController extends GetxController {
 
   String _firestoreMessage(FirebaseException error) {
     switch (error.code) {
-      case 'permission-denied':
-        return 'Firestore rules menolak akses. Izinkan user login menulis ke users/{uid}/notes.';
-      case 'not-found':
-        return 'Firestore Database belum dibuat untuk project Firebase ini.';
-      case 'unavailable':
-        return 'Firestore sedang tidak tersedia atau koneksi bermasalah.';
-      case 'unauthenticated':
-        return 'User belum login. Silakan login ulang.';
-      case 'failed-precondition':
-        return 'Firestore belum siap atau konfigurasi database belum lengkap.';
-      default:
-        return '${error.code}: ${error.message ?? 'Firestore error.'}';
+      case 'permission-denied': return 'Izin akses ditolak.';
+      case 'unavailable': return 'Firestore sedang tidak tersedia.';
+      default: return '${error.code}: ${error.message}';
     }
   }
 

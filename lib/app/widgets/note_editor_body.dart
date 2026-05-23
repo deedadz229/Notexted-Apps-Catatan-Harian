@@ -86,50 +86,29 @@ class NoteEditorBody extends StatelessWidget {
 
 class _TypeSelector extends StatelessWidget {
   const _TypeSelector({required this.controller});
-
   final NoteController controller;
-
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => SegmentedButton<NoteType>(
+    return Obx(() => SegmentedButton<NoteType>(
         segments: const [
-          ButtonSegment(
-            value: NoteType.regular,
-            icon: Icon(Icons.description_outlined),
-            label: Text('Catatan'),
-          ),
-          ButtonSegment(
-            value: NoteType.finance,
-            icon: Icon(Icons.payments_outlined),
-            label: Text('Keuangan'),
-          ),
-          ButtonSegment(
-            value: NoteType.todo,
-            icon: Icon(Icons.checklist_rounded),
-            label: Text('To-do'),
-          ),
+          ButtonSegment(value: NoteType.regular, icon: Icon(Icons.description_outlined), label: Text('Catatan')),
+          ButtonSegment(value: NoteType.finance, icon: Icon(Icons.payments_outlined), label: Text('Keuangan')),
+          ButtonSegment(value: NoteType.todo, icon: Icon(Icons.checklist_rounded), label: Text('To-do')),
         ],
         selected: {controller.selectedType.value},
-        onSelectionChanged: (value) => controller.selectedType.value =
-            value.first,
+        onSelectionChanged: (value) => controller.selectedType.value = value.first,
         showSelectedIcon: false,
         style: ButtonStyle(
           visualDensity: VisualDensity.compact,
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          ),
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
         ),
-      ),
-    );
+      ));
   }
 }
 
 class _FinanceFields extends StatelessWidget {
   const _FinanceFields({required this.controller});
-
   final NoteController controller;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -142,26 +121,15 @@ class _FinanceFields extends StatelessWidget {
           keyboardType: TextInputType.number,
         ),
         const SizedBox(height: 12),
-        Obx(
-          () => SegmentedButton<FinanceType>(
+        Obx(() => SegmentedButton<FinanceType>(
             segments: const [
-              ButtonSegment(
-                value: FinanceType.income,
-                icon: Icon(Icons.trending_up_rounded),
-                label: Text('Masuk'),
-              ),
-              ButtonSegment(
-                value: FinanceType.expense,
-                icon: Icon(Icons.trending_down_rounded),
-                label: Text('Keluar'),
-              ),
+              ButtonSegment(value: FinanceType.income, icon: Icon(Icons.trending_up_rounded), label: Text('Masuk')),
+              ButtonSegment(value: FinanceType.expense, icon: Icon(Icons.trending_down_rounded), label: Text('Keluar')),
             ],
             selected: {controller.financeType.value},
-            onSelectionChanged: (value) =>
-                controller.financeType.value = value.first,
+            onSelectionChanged: (value) => controller.financeType.value = value.first,
             showSelectedIcon: false,
-          ),
-        ),
+          )),
       ],
     );
   }
@@ -169,9 +137,7 @@ class _FinanceFields extends StatelessWidget {
 
 class _TodoFields extends StatelessWidget {
   const _TodoFields({required this.controller});
-
   final NoteController controller;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -182,7 +148,7 @@ class _TodoFields extends StatelessWidget {
             Expanded(
               child: AppTextField(
                 controller: controller.todoC,
-                hint: 'Tambah item to-do',
+                hint: 'Tambah item to-do disini...', 
                 icon: Icons.add_task_rounded,
               ),
             ),
@@ -195,42 +161,30 @@ class _TodoFields extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        Obx(
-          () => Column(
-            children: List.generate(controller.todos.length, (index) {
-              final item = controller.todos[index];
-              return Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color:
-                        Theme.of(context).dividerColor.withValues(alpha: 0.35),
+        Obx(() => Column(
+              children: List.generate(controller.todos.length, (index) {
+                final item = controller.todos[index];
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.35)),
                   ),
-                ),
-                child: CheckboxListTile(
-                  value: item.isDone,
-                  onChanged: (value) =>
-                      controller.toggleTodo(index, value ?? false),
-                  title: Text(
-                    item.title,
-                    style: TextStyle(
-                      decoration:
-                          item.isDone ? TextDecoration.lineThrough : null,
+                  child: CheckboxListTile(
+                    value: item.isDone,
+                    onChanged: (value) => controller.toggleTodo(index, value ?? false),
+                    title: Text(item.title, style: TextStyle(decoration: item.isDone ? TextDecoration.lineThrough : null)),
+                    secondary: IconButton(
+                      tooltip: 'Hapus item',
+                      onPressed: () => controller.removeTodo(index),
+                      icon: const Icon(Icons.close_rounded),
                     ),
+                    controlAffinity: ListTileControlAffinity.leading,
                   ),
-                  secondary: IconButton(
-                    tooltip: 'Hapus item',
-                    onPressed: () => controller.removeTodo(index),
-                    icon: const Icon(Icons.close_rounded),
-                  ),
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-              );
-            }),
-          ),
-        ),
+                );
+              }),
+            )),
       ],
     );
   }
@@ -238,9 +192,7 @@ class _TodoFields extends StatelessWidget {
 
 class _ReminderCard extends StatelessWidget {
   const _ReminderCard({required this.controller});
-
   final NoteController controller;
-
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -248,9 +200,7 @@ class _ReminderCard extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppTheme.softYellow.withValues(
-            alpha: Theme.of(context).brightness == Brightness.dark ? 0.14 : 1,
-          ),
+          color: AppTheme.softYellow.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.14 : 1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -259,24 +209,13 @@ class _ReminderCard extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                reminder == null
-                    ? 'Belum ada pengingat'
-                    : 'Pengingat ${DateFormat('dd MMM yyyy, HH:mm').format(reminder)}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      height: 1.35,
-                    ),
+                reminder == null ? 'Belum ada pengingat' : 'Pengingat ${DateFormat('dd MMM yyyy, HH:mm').format(reminder)}',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 1.35),
               ),
             ),
             if (reminder != null)
-              IconButton(
-                tooltip: 'Hapus pengingat',
-                onPressed: controller.clearReminder,
-                icon: const Icon(Icons.close_rounded),
-              ),
-            TextButton(
-              onPressed: () => controller.pickReminder(context),
-              child: Text(reminder == null ? 'Atur' : 'Ubah'),
-            ),
+              IconButton(tooltip: 'Hapus pengingat', onPressed: controller.clearReminder, icon: const Icon(Icons.close_rounded)),
+            TextButton(onPressed: () => controller.pickReminder(context), child: Text(reminder == null ? 'Atur' : 'Ubah')),
           ],
         ),
       );

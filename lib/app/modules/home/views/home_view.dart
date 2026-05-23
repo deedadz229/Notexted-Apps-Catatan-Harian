@@ -170,7 +170,7 @@ class _SearchAndFilters extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         SizedBox(
-          height: 42,
+          height: 48,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: NoteType.values.length + 1,
@@ -179,20 +179,37 @@ class _SearchAndFilters extends StatelessWidget {
               final type = index == 0 ? null : NoteType.values[index - 1];
               return Obx(() {
                 final selected = controller.selectedType.value == type;
-                return ChoiceChip(
-                  selected: selected,
-                  showCheckmark: false,
-                  avatar: type == null ? null : Icon(_typeIcon(type), size: 18),
-                  label: Text(type?.label ?? 'Semua'),
-                  onSelected: (_) => controller.selectedType.value = type,
-                  selectedColor: AppTheme.notesYellow,
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  side: BorderSide(
-                    color: selected
-                        ? AppTheme.notesYellow
-                        : Theme.of(context)
-                            .dividerColor
-                            .withValues(alpha: 0.35),
+                return InkWell(
+                  onTap: () => controller.selectedType.value = type,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? AppTheme.notesYellow
+                          : Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        if (type != null) ...[
+                          Icon(
+                            _typeIcon(type),
+                            size: 20,
+                            color: selected ? Colors.black87 : Theme.of(context).textTheme.bodyMedium?.color,
+                          ),
+                          const SizedBox(width: 8),
+                        ],
+                        Text(
+                          type?.label ?? 'Semua',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: selected ? FontWeight.bold : FontWeight.w600,
+                            color: selected ? Colors.black87 : Theme.of(context).textTheme.bodyMedium?.color,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               });
