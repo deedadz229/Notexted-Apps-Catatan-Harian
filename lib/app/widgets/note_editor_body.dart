@@ -215,7 +215,13 @@ class _ReminderCard extends StatelessWidget {
             ),
             if (reminder != null)
               IconButton(tooltip: 'Hapus pengingat', onPressed: controller.clearReminder, icon: const Icon(Icons.close_rounded)),
-            TextButton(onPressed: () => controller.pickReminder(context), child: Text(reminder == null ? 'Atur' : 'Ubah')),
+            TextButton(style: TextButton.styleFrom(
+              foregroundColor: Colors.orange,
+            ),
+            onPressed: () => controller.pickReminder(context),
+            child: Text(
+              reminder == null ? 'Atur' : 'Ubah',
+            ),),
           ],
         ),
       );
